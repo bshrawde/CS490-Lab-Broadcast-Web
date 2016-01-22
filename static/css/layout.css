@@ -1,0 +1,33 @@
+.purdue-gold {
+  background-color: #B1946c;
+}
+
+.purdue-gold-text {
+  color: #B1946c;
+}
+
+.purdue-yellow {
+  background-color: #b1810b;
+}
+
+.purdue-yellow-text {
+  color: #b1810b;
+}
+
+nav {
+  
+}
+
+nav ul li a {
+  color: #B1946c !important;
+}
+
+header, main, footer {
+  padding-left: 240px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
