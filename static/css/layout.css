@@ -14,12 +14,32 @@
   color: #b1810b;
 }
 
-nav {
-  
+.waves-effect.waves-gold .waves-ripple {
+  /* The alpha value allows the text and background color
+  of the button to still show through. */
+  background-color: #B1946c;
 }
 
-nav ul li a {
-  color: #B1946c !important;
+
+ul.side-nav.fixed li a {
+  color: #B1946c;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+ul.side-nav.fixed li .active {
+  background-color: #424242;
+}
+
+
+ul.side-nav.fixed li i {
+  font-size:2rem;
+  margin-top:0.25rem;
+}
+
+/* CSS Fix for nav bar buttons hovering.*/
+ul.side-nav.fixed li:hover, ul.side-nav.fixed li.active {
+  background-color: inherit;
 }
 
 header, main, footer {
