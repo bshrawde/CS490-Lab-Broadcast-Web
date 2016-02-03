@@ -4,7 +4,7 @@ app.debug = True
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("labs.html")
 
 @app.route('/login')
 def login():

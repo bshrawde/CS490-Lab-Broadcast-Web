@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block main %}
+      <ul id="lablist" class="collection"></ul>
+{% endblock %}
+{% block javascript%}
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script>
+  var labdata = [
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "LWSN B100"},
+              {name: "CS Lab", room: "HAAS B100"},
+              {name: "CS Lab", room: "HAAS B100"},
+              {name: "CS Lab", room: "HAAS B100"}
+             ];
+
+
+  var labmarkup = '<li class="collection-item avatar">' + 
+                    '<i class="material-icons circle">computer</i>' +
+                    '<span class="title">${name}</span>' +
+                    '<p>${room}<br>' +
+                       'Second Line' +
+                    '</p>' +
+                    '<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>' +
+                  '</li>';
+  
+  $.template( "labtemplate", labmarkup );
+
+  $("#lablist").empty();
+  $.tmpl("labtemplate", labdata)
+    .appendTo("#lablist"); 
+</script>
+{% endblock%}
