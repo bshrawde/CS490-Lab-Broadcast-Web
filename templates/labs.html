@@ -7,26 +7,28 @@
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 <script>
   var labdata = [
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "LWSN B100"},
-              {name: "CS Lab", room: "HAAS B100"},
-              {name: "CS Lab", room: "HAAS B100"},
-              {name: "CS Lab", room: "HAAS B100"}
+              {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0},
+              {name: "POD Lab", room: "LWSN B148", capacity: 24, current: 0},
+              {name: "SSLab Lab", room: "LWSN B158", capacity: 24, current: 0},
+              {name: "B131 Windows Lab", room: "LWSN B131", capacity: 24, current: 0},
+              {name: "B160 Windows Lab", room: "LWSN B160", capacity: 24, current: 0},
+              {name: "G40 Windows Lab", room: "HAAS G40", capacity: 24, current: 0},
+              {name: "Borg Lab", room: "HAAS G56", capacity: 24, current: 0},
+              {name: "Xinu Lab", room: "HAAS 256", capacity: 24, current: 0}
              ];
+
+  $.get( "http://mc15.cs.purdue.edu:5000", function( data ) {
+      labdata[0].current = data['moore'] + 5
+  });
+
 
 
   var labmarkup = '<li class="collection-item avatar">' + 
                     '<i class="material-icons circle">computer</i>' +
                     '<span class="title">${name}</span>' +
                     '<p>${room}<br>' +
-                       'Second Line' +
                     '</p>' +
-                    '<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>' +
+                    '<a href="#!" class="black-text secondary-content">${current}/${capacity}</a>' +
                   '</li>';
   
   $.template( "labtemplate", labmarkup );
