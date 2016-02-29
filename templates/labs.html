@@ -17,24 +17,27 @@
               {name: "Xinu Lab", room: "HAAS 256", capacity: 24, current: 0}
              ];
 
-  $.get( "http://mc15.cs.purdue.edu:5000", function( data ) {
-      labdata[0].current = data['moore'] + 5
+  $.getJSON( "http://localhost:5000", function( data ) {
+      labdata[0].current = data['moore']
+      updateLabs();
   });
 
 
-
-  var labmarkup = '<li class="collection-item avatar">' + 
+  var labmarkup = '<li class="collection-item avatar">' +
                     '<i class="material-icons circle">computer</i>' +
                     '<span class="title">${name}</span>' +
                     '<p>${room}<br>' +
                     '</p>' +
                     '<a href="#!" class="black-text secondary-content">${current}/${capacity}</a>' +
                   '</li>';
-  
+
   $.template( "labtemplate", labmarkup );
 
-  $("#lablist").empty();
-  $.tmpl("labtemplate", labdata)
-    .appendTo("#lablist"); 
+  function updateLabs() {
+    $("#lablist").empty();
+    $.tmpl("labtemplate", labdata).appendTo("#lablist");
+  }
+  updateLabs();
+
 </script>
 {% endblock%}
