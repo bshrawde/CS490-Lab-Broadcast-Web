@@ -1,43 +1,82 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block main %}
-      <ul id="lablist" class="collection"></ul>
+      <ul id="lablist" class="collection collapsible" data-collapsible="expandable"></ul>
 {% endblock %}
 {% block javascript%}
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 <script>
   var labdata = [
-              {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0},
-              {name: "POD Lab", room: "LWSN B148", capacity: 24, current: 0},
-              {name: "SSLab Lab", room: "LWSN B158", capacity: 24, current: 0},
-              {name: "B131 Windows Lab", room: "LWSN B131", capacity: 24, current: 0},
-              {name: "B160 Windows Lab", room: "LWSN B160", capacity: 24, current: 0},
-              {name: "G40 Windows Lab", room: "HAAS G40", capacity: 24, current: 0},
-              {name: "Borg Lab", room: "HAAS G56", capacity: 24, current: 0},
-              {name: "Xinu Lab", room: "HAAS 256", capacity: 24, current: 0}
-             ];
+    {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0, dataid: "LWSNB146", camid: "lwsnb146"},
+    {name: "POD Lab", room: "LWSN B148", capacity: 24, current: 0, dataid: "LWSNB148", camid: "lwsnb148"},
+    {name: "SSLab Lab", room: "LWSN B158", capacity: 24, current: 0, dataid: "LWSNB158", camid: "lwsnb158"},
+    {name: "B131 Windows Lab", room: "LWSN B131", capacity: 24, current: 0, dataid: "LWSNB131", camid: "lwsnb131"},
+    {name: "B160 Windows Lab", room: "LWSN B160", capacity: 24, current: 0, dataid: "LWSNB160", camid: "lwsnb160"},
+    {name: "G56 Windows Lab", room: "HAAS G56", capacity: 24, current: 0, dataid: "HAASG40", camid: "haasg056"},
+    {name: "Borg Lab", room: "HAAS G40", capacity: 24, current: 0, dataid: "HAASG40", camid: "haasg040"},
+    {name: "Xinu Lab", room: "HAAS 257", capacity: 24, current: 0, dataid: "HAAS257", camid: "haas257"}
+   ];
 
-  $.getJSON( "http://localhost:5000", function( data ) {
-      labdata[0].current = data['moore']
-      updateLabs();
+  $.getJSON( "http://mc15.cs.purdue.edu:5000", function( data ) {
+      labdata.forEach( function (lab) {
+        lab.current = data[lab.dataid];
+      });
+      updateLabview();
   });
 
 
-  var labmarkup = '<li class="collection-item avatar">' +
-                    '<i class="material-icons circle">computer</i>' +
-                    '<span class="title">${name}</span>' +
-                    '<p>${room}<br>' +
-                    '</p>' +
-                    '<a href="#!" class="black-text secondary-content">${current}/${capacity}</a>' +
+  var labmarkup = '<li>' +
+                    '<div class="collapsible-header collection-item avatar">' +
+                      '<i class="material-icons circle">computer</i>' +
+                      '<span class="title">${name}</span>' +
+                      '<p>${room}<br>' +
+                      '</p>' +
+                      '<a href="#!" class="black-text secondary-content">${current}/${capacity}</a>' +
+                    '</div>' +
+                    '<div class="collapsible-body">' + 
+                      '<img class="materialboxed camstream" width=400px; data-camid="${camid}"' + 
+                        'src="http://${camid}-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi">' + 
+                    '<iframe frameborder="0" height="240" scrolling="no" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=AGENDA&amp;width=600&amp;height=400&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=1r5tgrb2sln4oe4h4f4gfeece8%40group.calendar.google.com&amp;color=%235229A3&amp;ctz=America%2FNew_York" style="border-width: 0; height: 300px; width:50%;"></iframe>' +
+                    '</div>' +
                   '</li>';
 
   $.template( "labtemplate", labmarkup );
 
-  function updateLabs() {
+  // Credit to http://davidtschida.com/ for finding this trick with the camera streams!
+  function refreshCamStream(cam) {
+    cam.attr("src", "http://" + cam.attr("data-camid") + "-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?" + Date.now());
+  }
+
+
+  function updateLabview() {
     $("#lablist").empty();
     $.tmpl("labtemplate", labdata).appendTo("#lablist");
+
+    //As atm our stuff is dynamically added in, we have to initialize some things.
+    $('.collapsible').collapsible({
+      accordion : false
+    });
+
+    $('.materialboxed').materialbox();
+
+    // If we have the tab opened, we refresh the camera stream.
+    $(".camstream").bind("load", function() {
+      if ($(this).parent().parents(".active").length) {
+        refreshCamStream($(this));
+      }
+    });
+
+    $(".collapsible-header").bind("click", function() {
+      refreshCamStream($(this).parent().find(".camstream"));
+    });
+  
   }
-  updateLabs();
+
+
+  $(document).ready(function(){
+    $.template( "labtemplate", labmarkup );
+    updateLabview();
+  });
 
 </script>
 {% endblock%}

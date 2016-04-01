@@ -20,6 +20,24 @@
   background-color: #B1946c;
 }
 
+#lablist li div.collection-item {
+  min-height: 0px;
+}
+
+#lablist li.active div.active{
+  background-color: white;
+  color:black;
+}
+
+#lablist .camstream {
+  width: 400px;
+  margin: 15px;
+}
+
+#lablist .collapsible-body .material-placeholder {
+  display: inline-block;
+}
+
 
 ul.side-nav.fixed li a {
   color: #B1946c;
