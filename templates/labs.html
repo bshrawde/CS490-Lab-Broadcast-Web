@@ -7,14 +7,22 @@
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 <script>
   var labdata = [
-    {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0, dataid: "LWSNB146", camid: "lwsnb146"},
-    {name: "POD Lab", room: "LWSN B148", capacity: 24, current: 0, dataid: "LWSNB148", camid: "lwsnb148"},
-    {name: "SSLab Lab", room: "LWSN B158", capacity: 24, current: 0, dataid: "LWSNB158", camid: "lwsnb158"},
-    {name: "B131 Windows Lab", room: "LWSN B131", capacity: 24, current: 0, dataid: "LWSNB131", camid: "lwsnb131"},
-    {name: "B160 Windows Lab", room: "LWSN B160", capacity: 24, current: 0, dataid: "LWSNB160", camid: "lwsnb160"},
-    {name: "G56 Windows Lab", room: "HAAS G56", capacity: 24, current: 0, dataid: "HAASG40", camid: "haasg056"},
-    {name: "Borg Lab", room: "HAAS G40", capacity: 24, current: 0, dataid: "HAASG40", camid: "haasg040"},
-    {name: "Xinu Lab", room: "HAAS 257", capacity: 24, current: 0, dataid: "HAAS257", camid: "haas257"}
+    {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0, 
+        dataid: "LWSNB146", camid: "lwsnb146", calendar: "1r5tgrb2sln4oe4h4f4gfeece8"},
+    {name: "POD Lab", room: "LWSN B148", capacity: 24, current: 0,
+        dataid: "LWSNB148", camid: "lwsnb148", calendar: "hd9ldosmo9upm7u5scvq8uumig"},
+    {name: "SSLab Lab", room: "LWSN B158", capacity: 24, current: 0, 
+        dataid: "LWSNB158", camid: "lwsnb158", calendar: "25m91hh3dpdlcguv5h30i749pg"},
+    {name: "B131 Windows Lab", room: "LWSN B131", capacity: 24, current: 0, 
+        dataid: "LWSNB131", camid: "lwsnb131", calendar: "isp5jp397bj8et0i5r8g6kd3uo"},
+    {name: "B160 Windows Lab", room: "LWSN B160", capacity: 24, current: 0, 
+        dataid: "LWSNB160", camid: "lwsnb160", calendar: "bvh903t70gtpvgtl6m8vhl2e1s"},
+    {name: "G56 Windows Lab", room: "HAAS G56", capacity: 24, current: 0, 
+        dataid: "HAASG40", camid: "haasg056", calendar: "2c8utbns46atet3h1stfpaud88"},
+    {name: "Borg Lab", room: "HAAS G40", capacity: 24, current: 0, 
+        dataid: "HAASG40", camid: "haasg040", calendar: "jv11mjte5oupheck2kmv36mn2o"},
+    {name: "Xinu Lab", room: "HAAS 257", capacity: 24, current: 0, 
+        dataid: "HAAS257", camid: "haas257", calendar: "tg56f4t31msvg4o56iuf37luqk"}
    ];
 
   $.getJSON( "http://mc15.cs.purdue.edu:5000", function( data ) {
@@ -36,7 +44,7 @@
                     '<div class="collapsible-body">' + 
                       '<img class="materialboxed camstream" width=400px; data-camid="${camid}"' + 
                         'src="http://${camid}-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi">' + 
-                    '<iframe frameborder="0" height="240" scrolling="no" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=AGENDA&amp;width=600&amp;height=400&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=1r5tgrb2sln4oe4h4f4gfeece8%40group.calendar.google.com&amp;color=%235229A3&amp;ctz=America%2FNew_York" style="border-width: 0; height: 300px; width:50%;"></iframe>' +
+                    '<iframe frameborder="0" height="240" scrolling="no" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=AGENDA&amp;width=600&amp;height=400&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=${calendar}%40group.calendar.google.com&amp;color=%235229A3&amp;ctz=America%2FNew_York" style="border-width: 0; height: 300px; width:50%;"></iframe>' +
                     '</div>' +
                   '</li>';
 
