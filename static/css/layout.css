@@ -72,9 +72,18 @@ header, main, footer {
 
 #refresh {
   float: right;
-  top: 14px;
+  top: 11px;
   margin-right: 10px;
-  
+}
+
+@media only screen and (min-width: 601px) {
+  #refresh {
+    top: 14px;
+  }
+}
+
+a.button-collapse {
+  margin-left: 5px;
 }
 
 /* Overrides nav's setting*/
