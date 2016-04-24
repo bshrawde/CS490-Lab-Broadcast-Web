@@ -3,7 +3,7 @@
 }
 
 .purdue-gold-text {
-  color: #B1946c;
+  color: #B1946c !important;
 }
 
 .purdue-yellow {
@@ -68,4 +68,42 @@ header, main, footer {
   header, main, footer {
     padding-left: 0;
   }
+}
+
+#refresh {
+  float: right;
+  top: 14px;
+  margin-right: 10px;
+  
+}
+
+/* Overrides nav's setting*/
+#refresh i {
+  line-height: 37px;
+}
+
+@-webkit-keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-moz-keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-o-keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.rotato-potato
+{
+  -webkit-animation: rotate 1s infinite; /* Safari 4+ */
+  -moz-animation:    rotate 1s infinite; /* Fx 5+ */
+  -o-animation:      rotate 1s infinite; /* Opera 12+ */
+  animation:         rotate 1s infinite; /* IE 10+, Fx 29+ */
+  animation-timing-function: linear;
 }

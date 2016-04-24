@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
+{% block nav %}
+    <a id="refresh" class="btn-floating grey darken-3">
+      <i class="material-icons purdue-gold-text">refresh</i>
+    </a>
+{% endblock %}
 {% block main %}
       <ul id="lablist" class="collection collapsible" data-collapsible="expandable"></ul>
 {% endblock %}
@@ -25,12 +30,27 @@
         dataid: "HAAS257", camid: "haas257", calendar: "tg56f4t31msvg4o56iuf37luqk"}
    ];
 
-  $.getJSON( "http://mc15.cs.purdue.edu:5000", function( data ) {
-      labdata.forEach( function (lab) {
-        lab.current = data[lab.dataid];
-      });
-      updateLabview();
+  
+function getLabData() {
+  var ajaxTime = Date.now();
+  $.getJSON( "http://mc15.cs.purdue.edu:5000/status", function( data ) {
+    labdata.forEach( function (lab) {
+      lab.current = data[lab.dataid];
+    });
+  })
+  .done(function() {
+    updateLabview();
+  })
+  .fail(function() {
+    alert("Unable to retrieve lab data.")
+  })
+  .always(function() {
+    // Have our refresh button spin a full rotation.
+    setTimeout(function() {
+        $("#refresh").removeClass("rotato-potato");
+    }, 1000 - (Date.now() - ajaxTime) % 1000);
   });
+}
 
 
   var labmarkup = '<li>' +
@@ -44,8 +64,7 @@
                     '<div class="collapsible-body">' + 
                       '<img class="materialboxed camstream" width=400px; data-camid="${camid}"' + 
                         'src="http://${camid}-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi">' + 
-                    '<iframe frameborder="0" height="240" scrolling="no" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=AGENDA&amp;width=600&amp;height=400&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=${calendar}%40group.calendar.google.com&amp;color=%235229A3&amp;ctz=America%2FNew_York" style="border-width: 0; height: 300px; width:50%;"></iframe>' +
-                    '</div>' +
+                    
                   '</li>';
 
   $.template( "labtemplate", labmarkup );
@@ -79,11 +98,17 @@
     });
   
   }
+  
+  $("#refresh").bind("click", function() {
+    $("#refresh").addClass("rotato-potato");
+    getLabData();
+  });
 
 
   $(document).ready(function(){
     $.template( "labtemplate", labmarkup );
     updateLabview();
+    getLabData();
   });
 
 </script>
