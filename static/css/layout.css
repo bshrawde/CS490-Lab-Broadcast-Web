@@ -1,5 +1,5 @@
 .purdue-gold {
-  background-color: #B1946c;
+  background-color: #B1946c !important;
 }
 
 .purdue-gold-text {
@@ -116,3 +116,24 @@ a.button-collapse {
   animation:         rotate 1s infinite; /* IE 10+, Fx 29+ */
   animation-timing-function: linear;
 }
+
+input {
+  height: 2rem;
+}
+
+.form-padding {
+  margin-left: 0.75rem;
+}
+
+@media only screen and (min-width: 601px) {
+  .divider {
+    width: 1px;
+    height:300px;
+    margin: 1% 2%;
+    padding: 0 !important;
+    left: auto;
+    right: auto;
+  }
+}
+
+
