@@ -7,13 +7,13 @@
             <form id="login">
               <div class="row" style="margin-bottom: 5px;">
                 <div class="input-field col s12">
-                  <input id="email" type="email" class="validate">
+                  <input id="email" type="email" class="validate" required>
                   <label for="email">Purdue username</label>
                 </div>
               </div>
               <div class="row">
                 <div class="input-field col s12">
-                  <input id="password" type="password" class="validate">
+                  <input id="password" type="password" class="validate" required>
                   <label for="password">Password</label>
                 </div>
               </div>
@@ -23,18 +23,56 @@
           <div class="divider col">&nbsp;</div>
           <div class="col s12 m6">
             <h4>Create an Account</h4>
+            <form id="register">
+              <div class="row" style="margin-bottom: 5px;">
+                <div class="input-field col s12">
+                  <input id="reg_email" type="email" class="validate" required>
+                  <label for="reg_email">Purdue username</label>
+                </div>
+              </div>
+              <div class="row" style="margin-bottom: 5px;">
+                <div class="input-field col s12">
+                  <input id="reg_password" type="password" class="validate" required>
+                  <label for="reg_password">Password</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="reg_passwordconfirm" type="password" class="validate" required>
+                  <label for="reg_passwordconfirm" data-error="passwords do not match">Password confirm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                </div>
+              </div>
+              <input class="form-padding btn waves-effect waves-light purdue-gold" type="submit" value="Login"/>
+            </form>
           </div>
         </div>
 {% endblock %}
 {% block javascript %}
   <script>
-      $("input[type=email]").change( function() {
-        $("input[type=email]").val( $("input[type=email]").val() + '@purdue.edu' );
+      $("input[type=email]").focusout( function() {
+        $(this).val( $(this).val() + '@purdue.edu' );
+      });
+      
+      $("input[type=email]").focusin( function() {
+        $(this).val( $(this).val().replace('@purdue.edu', '') );
       });
       
       $("#login").submit( function ( event ) {
         event.preventDefault();
         $.post('/login', $('#login').serialize());
+      });
+      
+      $("#register").submit( function ( event ) {
+        event.preventDefault();
+        $.post('/login', $('#login').serialize());
+      });
+      
+      $("#reg_passwordconfirm").change( function() {
+        if ($(this).val() != $("#reg_password").val()) {
+          $(this)[0].setCustomValidity("Passwords do not match.");
+        } else {
+          $(this)[0].setCustomValidity("");
+        }
       });
   </script>
 
