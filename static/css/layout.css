@@ -125,6 +125,10 @@ input {
   margin-left: 0.75rem;
 }
 
+.divider {
+  display:none;
+}
+
 @media only screen and (min-width: 601px) {
   .divider {
     width: 1px;
@@ -137,3 +141,6 @@ input {
 }
 
 
+label[for=reg_passwordconfirm] {
+  width:150px;
+}

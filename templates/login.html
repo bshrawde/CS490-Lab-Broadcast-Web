@@ -66,6 +66,12 @@
         event.preventDefault();
         $.post('/login', $('#login').serialize());
       });
+
+      $("#reg_password").change( function () {
+        if ($(this).val().length <= 4) {
+          alert("I mean that is a pretty weak password, but I trust you know what you are doing and won't stop you.. ")
+        }
+      });
       
       $("#reg_passwordconfirm").change( function() {
         if ($(this).val() != $("#reg_password").val()) {
