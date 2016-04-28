@@ -131,6 +131,7 @@ input {
 
 @media only screen and (min-width: 601px) {
   .divider {
+    display: inline;
     width: 1px;
     height:300px;
     margin: 1% 2%;
@@ -143,4 +144,8 @@ input {
 
 label[for=reg_passwordconfirm] {
   width:150px;
+}
+
+#about {
+  font-family: GillSans, Calibri, Trebuchet, sans-serif;
 }
