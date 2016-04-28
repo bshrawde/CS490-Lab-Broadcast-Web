@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block main %}
+<div class="form-padding">
+{% if status == 200 %}
+<h4>Success</h4>
+<p>Your account has been successfully verified.</p>
+<a href="labbroadcast://verified">Click here to open the app.</a>
+{% else %}
+<h4>Not Success</h4>
+<p>Your account has failed to be verified.</p>
+<p>Email <a href="mailto:smithsp@purdue.edu">Simon Smith</a> for assistance if this continues.</p>
+{% endif %}
+</div>
+{% endblock %}
