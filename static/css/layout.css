@@ -36,10 +36,11 @@
 }
 
 #lablist .canvas-holder {
-  margin-right: 15px;
+  margin-top: 15px;
 }
 
 #lablist canvas {
+  margin-top: 15px;
 }
 
 #lablist .collapsible-body .material-placeholder {

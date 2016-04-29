@@ -11,7 +11,7 @@
 {% block javascript%}
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 <script src="/static/js/chart.bundle.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
 <script>
   var labdata = [
     {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0, 
@@ -57,12 +57,22 @@ function getLabData() {
 function getLabHistory() {
   var ajaxTime = Date.now();
   $.getJSON( "http://mc15.cs.purdue.edu:5000/status/history", function( data ) {
+    var startTime = data['startTime'];
+    var endTime = data['endTime'];
+    var interval = data['interval'];
+
+    var chartLabel = [];
+    for (var i = 0; i <= 4 * 2 + 1; i++) {
+      var m = moment.unix(startTime + i * 1800);
+      chartLabel.push(m.format('h:mm'));
+    }
+
     labdata.forEach( function (lab) {
       lab.history = data[lab.dataid];
       if (lab.history == null) {
         lab.history = [];
       }
-      makeChart(lab);
+      makeChart(lab, chartLabel);
     });
   })
   .fail(function() {
@@ -70,10 +80,21 @@ function getLabHistory() {
   });
 }
 
+//What color are you Sibyl, what color am I?
+function whatColor(current, capacity) {
+  if (current / capacity > 0.75) {
+    return "red";
+  } else if (current / capacity > 0.4) {
+    return "orange";
+  } else {
+    return "green";
+  }
+}
+
 
   var labmarkup = '<li>' +
                     '<div class="collapsible-header collection-item avatar">' +
-                      '<i class="material-icons circle">computer</i>' +
+                      '<i class="material-icons circle ${whatColor(current, capacity)}">computer</i>' +
                       '<span class="title">${name}</span>' +
                       '<p>${room}<br>' +
                       '</p>' +
@@ -90,12 +111,13 @@ function getLabHistory() {
 
   $.template( "labtemplate", labmarkup );
 
-  function makeChart(lab) {
+  function makeChart(lab, label) {
         var chart = new Chart($("#chart-" + lab.dataid), {
         type: 'line',
-        data: {labels: ["January", "February", "March", "April", "May", "June", "July"], 
+        data: {labels: label, 
         datasets: [{
-                    fill: false,
+                    label: "",
+                    fill: true,
                     lineTension: 0.1,
                     backgroundColor: "#B1946c",
                     borderColor: "#B1946c",
@@ -116,9 +138,22 @@ function getLabHistory() {
                 }
             ]},
         options: {
-    
+          scales: {
+              yAxes: [{
+                  display: true,
+                  ticks: {
+                      suggestedMax: 25,
+                      stepSize: 5,
+                      beginAtZero: true   // minimum value will be 0.
+                  }
+              }]
+          },
+          legend: {
+                  display: false
+          }
         }
     });
+
   }
 
   // Credit to http://davidtschida.com/ for finding this trick with the camera streams!
