@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block nav %}
-    <a id="refresh" class="btn-floating grey darken-3">
+    <a id="refresh" class="btn-floating grey darken-3 z-depth-0">
       <i class="material-icons purdue-gold-text">refresh</i>
     </a>
 {% endblock %}
@@ -10,23 +10,25 @@
 {% endblock %}
 {% block javascript%}
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script src="/static/js/chart.bundle.js"></script>
+
 <script>
   var labdata = [
     {name: "Moore Lab", room: "LWSN B146", capacity: 24, current: 0, 
         dataid: "LWSNB146", camid: "lwsnb146", calendar: "1r5tgrb2sln4oe4h4f4gfeece8"},
-    {name: "POD Lab", room: "LWSN B148", capacity: 24, current: 0,
+    {name: "POD Lab", room: "LWSN B148", capacity: 25, current: 0,
         dataid: "LWSNB148", camid: "lwsnb148", calendar: "hd9ldosmo9upm7u5scvq8uumig"},
     {name: "SSLab Lab", room: "LWSN B158", capacity: 24, current: 0, 
         dataid: "LWSNB158", camid: "lwsnb158", calendar: "25m91hh3dpdlcguv5h30i749pg"},
-    {name: "B131 Windows Lab", room: "LWSN B131", capacity: 24, current: 0, 
+    {name: "B131 Windows Lab", room: "LWSN B131", capacity: 25, current: 0, 
         dataid: "LWSNB131", camid: "lwsnb131", calendar: "isp5jp397bj8et0i5r8g6kd3uo"},
-    {name: "B160 Windows Lab", room: "LWSN B160", capacity: 24, current: 0, 
+    {name: "B160 Windows Lab", room: "LWSN B160", capacity: 25, current: 0, 
         dataid: "LWSNB160", camid: "lwsnb160", calendar: "bvh903t70gtpvgtl6m8vhl2e1s"},
     {name: "G56 Windows Lab", room: "HAAS G56", capacity: 24, current: 0, 
         dataid: "HAASG56", camid: "haasg056", calendar: "2c8utbns46atet3h1stfpaud88"},
     {name: "Borg Lab", room: "HAAS G40", capacity: 24, current: 0, 
         dataid: "HAASG40", camid: "haasg040", calendar: "jv11mjte5oupheck2kmv36mn2o"},
-    {name: "Xinu Lab", room: "HAAS 257", capacity: 24, current: 0, 
+    {name: "Xinu Lab", room: "HAAS 257", capacity: 21, current: 0, 
         dataid: "HAAS257", camid: "haas257", calendar: "tg56f4t31msvg4o56iuf37luqk"}
    ];
 
@@ -52,6 +54,22 @@ function getLabData() {
   });
 }
 
+function getLabHistory() {
+  var ajaxTime = Date.now();
+  $.getJSON( "http://mc15.cs.purdue.edu:5000/status/history", function( data ) {
+    labdata.forEach( function (lab) {
+      lab.history = data[lab.dataid];
+      if (lab.history == null) {
+        lab.history = [];
+      }
+      makeChart(lab);
+    });
+  })
+  .fail(function() {
+    alert("Unable to retrieve lab history data.")
+  });
+}
+
 
   var labmarkup = '<li>' +
                     '<div class="collapsible-header collection-item avatar">' +
@@ -62,12 +80,46 @@ function getLabData() {
                       '<a href="#!" class="black-text secondary-content">${current}/${capacity}</a>' +
                     '</div>' +
                     '<div class="collapsible-body">' + 
-                      '<img class="materialboxed camstream" width=400px; data-camid="${camid}"' + 
-                        'src="http://${camid}-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi">' + 
+                      '<div class="row">' +
+                      '<div class="col m3"><img class="col m12 materialboxed camstream" data-camid="${camid}"' + 
+                        'src="http://${camid}-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi"> </div>' + 
+                        '<div class="col m6 push-m3"><canvas id="chart-${dataid}" dataid="${dataid}"></canvas></div></br></br>' +
+                      '</div>' +
                     '</div>' +
                   '</li>';
 
   $.template( "labtemplate", labmarkup );
+
+  function makeChart(lab) {
+        var chart = new Chart($("#chart-" + lab.dataid), {
+        type: 'line',
+        data: {labels: ["January", "February", "March", "April", "May", "June", "July"], 
+        datasets: [{
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "#B1946c",
+                    borderColor: "#B1946c",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "#B1946c",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "#B1946c",
+                    pointHoverBorderColor: "#B1946c",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: lab.history,
+                }
+            ]},
+        options: {
+    
+        }
+    });
+  }
 
   // Credit to http://davidtschida.com/ for finding this trick with the camera streams!
   function refreshCamStream(cam) {
@@ -96,8 +148,10 @@ function getLabData() {
     $(".collapsible-header").bind("click", function() {
       refreshCamStream($(this).parent().find(".camstream"));
     });
-  
+
+    getLabHistory();
   }
+
   
   $("#refresh").bind("click", function() {
     $("#refresh").addClass("rotato-potato");

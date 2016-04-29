@@ -30,8 +30,16 @@
 }
 
 #lablist .camstream {
-  width: 400px;
+  height:247px;
+  width:330px;
   margin: 15px;
+}
+
+#lablist .canvas-holder {
+  margin-right: 15px;
+}
+
+#lablist canvas {
 }
 
 #lablist .collapsible-body .material-placeholder {
